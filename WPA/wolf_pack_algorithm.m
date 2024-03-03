@@ -1,5 +1,5 @@
 % 狼群算法
-%fitness_func = 10;
+%fitness_func - 适应度函数
 %lb = -10;
 %ub = 10;
 %dim = 2;
