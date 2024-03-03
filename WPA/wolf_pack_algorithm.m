@@ -1,5 +1,14 @@
 % 狼群算法
-function [bestX, bestF] = wolf_pack_algorithm(fitness_func, lb, ub, dim, max_gen, pop_size, alpha, beta, delta)
+%fitness_func = 10;
+%lb = -10;
+%ub = 10;
+%dim = 2;
+%max_gen = 10;
+%pop_size = 5;
+%alpha = 0.5;
+%beta = 0.5;
+%delta = 0.5;
+function [bestX, bestF] = wolf_pack_algorithm(lb, ub, dim, max_gen, pop_size, alpha, beta, delta)
 % fitness_func - 适应度函数
 % lb - 自变量下界
 % ub - 自变量上界
@@ -12,7 +21,7 @@ function [bestX, bestF] = wolf_pack_algorithm(fitness_func, lb, ub, dim, max_gen
     % 初始化种群
     pop = create_population(lb, ub, dim, pop_size);
     % 计算适应度
-    fitness = evaluate_fitness(fitness_func, pop, pop_size);
+    fitness = evaluate_fitness( pop, pop_size);
     % 寻找最优解
     [bestF, bestIdx] = min(fitness);
     bestX = pop(bestIdx, :);
@@ -30,7 +39,7 @@ function [bestX, bestF] = wolf_pack_algorithm(fitness_func, lb, ub, dim, max_gen
                     C = 2 * r2;
                     D = abs(C .* bestX - pop(i, :));
                     X1 = bestX - A .* D;
-                    fitness_X1 = evaluate_fitness(fitness_func, X1, 1);
+                    fitness_X1 = evaluate_fitness( X1, 1);
                     % 更新最优解
                     if fitness_X1 < bestF
                         bestF = fitness_X1;
@@ -44,7 +53,7 @@ function [bestX, bestF] = wolf_pack_algorithm(fitness_func, lb, ub, dim, max_gen
                         r3 = rand;
                         if r3 < beta
                             X2 = pop(j, :) + delta * (rand(1, dim) - 0.5);
-                            fitness_X2 = evaluate_fitness(fitness_func, X2, 1);
+                            fitness_X2 = evaluate_fitness( X2, 1);
                             % 更新最优解
                             if fitness_X2 < bestF
                                 bestF = fitness_X2;
@@ -67,9 +76,11 @@ function pop = create_population(lb, ub, dim, pop_size)
     pop = repmat(lb, pop_size, 1) + rand(pop_size, dim) .* repmat((ub - lb), pop_size, 1);
 end
 % 计算适应度
-function fitness = evaluate_fitness(fitness_func, pop, pop_size)
+function fitness = evaluate_fitness( pop, pop_size)
     fitness = zeros(pop_size, 1);
     for i = 1:pop_size
-        fitness(i) = fitness_func(pop(i, :));
+        fitness(i) = norm(pop(i, :));
+        %distance(i)=norm(pop(i,:));
+
     end
 end
