@@ -39,7 +39,7 @@ function cost = AStarSearch(start,goal,obmap)
             Grids(i,j,4) = inf; % gֵ
         end
     end
-    Open = [start];
+    Open = start;
     Grids(start(1),start(2),4) = 0;
     Close = [];
     while ~isempty(Open)
